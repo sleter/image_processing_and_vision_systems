@@ -86,20 +86,29 @@ def zad2_todo():
 
     cv2.destroyAllWindows()
 
+
+def check_time(func):
+    def fun_wrapper(interpolation_, img, window_name):
+        e1 = cv2.getTickCount()
+        func(interpolation_, img, window_name)
+        e2 = cv2.getTickCount()
+        time = (e2 - e1) / cv2.getTickFrequency()
+        print(window_name+": "+str(time)+" seconds")
+    return fun_wrapper
+
+@check_time
+def resize_(interpolation_, img, window_name):
+    pom = cv2.resize(img, dsize=(500,500), interpolation=interpolation_)
+    cv2.imshow(window_name,pom)
+
+
 def zad3():
-    img = cv2.imread('img.jpg', 0)
-    img_scaled = img
-    inter1 = cv2.resize(img, dsize=(100,100), interpolation=cv2.INTER_LINEAR)
-    inter2 = cv2.resize(img, dsize=(500,500), interpolation=cv2.INTER_AREA)
-    inter3 = cv2.resize(img, dsize=(500,500), interpolation=cv2.INTER_CUBIC)
-    inter4 = cv2.resize(img, dsize=(500,500), interpolation=cv2.INTER_LANCZOS4)
+    img = cv2.imread('img.png', 0)
 
-    titles = ['Original Image', 'INTER_LINEAR', 'INTER_NEAREST', 'INTER_AREA', 'INETR_LANCZOS4']
-    images = [img_scaled, inter1, inter2, inter3, inter4]
-
-    for i in range(5):
-        cv2.imshow('{}'.format(titles[i]), images[i])
-
+    resize_(cv2.INTER_LINEAR, img, "INTER_LINEAR")
+    resize_(cv2.INTER_AREA, img, "INTER_AREA")
+    resize_(cv2.INTER_CUBIC, img, "INTER_CUBIC")
+    resize_(cv2.INTER_LANCZOS4, img, "INTER_LANCZOS4")
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -109,8 +118,8 @@ def zad4():
     img1 = cv2.imread('img.png')
     img2 = cv2.imread('1.png')
 
-    i1 = cv2.resize(img1, dsize=(400, 400), interpolation=cv2.INTER_LINEAR)
-    i2 = cv2.resize(img2, dsize=(400, 400), interpolation=cv2.INTER_LINEAR)
+    i1 = cv2.resize(img1, dsize=(400, 400))
+    i2 = cv2.resize(img2, dsize=(400, 400))
 
     dst = cv2.addWeighted(i1, 0.7, i2, 0.3, 0)
 
@@ -118,7 +127,7 @@ def zad4():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def zad5():
+def nwm():
     def trackbar1(x):
         ret, thresh1 = cv2.threshold(img, x, 255, cv2.THRESH_BINARY)
         cv2.imshow('image', thresh1)
@@ -147,8 +156,19 @@ def zad5():
 
 
 if __name__ == '__main__':
-    #zad1()
-    #zad2()
-    #zad2_todo()
-    #zad3()
-    zad4()
+    input = input("$> ")
+    input = str(input)
+    if(input == '1'):
+        zad1()
+    elif(input == '2'):
+        zad2()
+    elif(input == '2todo'):
+        zad2_todo()
+    elif(input == '3'):
+        zad3()
+    elif(input == '4'):
+        zad4()
+    elif(input == 'nwm'):
+        nwm()
+    else:
+        print("nope")
