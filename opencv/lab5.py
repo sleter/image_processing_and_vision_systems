@@ -49,11 +49,11 @@ def zad2():
     cv2.destroyAllWindows()
 
 
-def zad3():
+def zad3(img):
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
-    img = cv2.imread('twarze.jpg')
+    #img = cv2.imread('twarze.jpg')
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
@@ -65,9 +65,23 @@ def zad3():
         for (ex, ey, ew, eh) in eyes:
             cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
 
-    cv2.imshow('img', img)
-    cv2.waitKey(0)
+    return img
+
+    #cv2.imshow('img', img)
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
+
+def cam_face_detection():
+    cap = cv2.VideoCapture(0)
+    key = ord('a')
+    while key != ord('q'):
+        ret, frame = cap.read()
+        #img_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        out = zad3(frame)
+        cv2.imshow('result', out)
+        key = cv2.waitKey(30)
+    cap.release()
     cv2.destroyAllWindows()
 
 
-zad3()
+cam_face_detection()
